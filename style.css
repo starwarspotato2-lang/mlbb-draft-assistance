@@ -1,14 +1,14 @@
 /* Core Game Styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #0b101e; /* Deep MLBB Blue/Black */
+    background-color: #0b101e;
     color: #e0e6ed;
     margin: 0;
     padding: 0;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Stops whole page scrolling */
+    overflow: hidden;
 }
 
 /* Header: Bans and Status */
@@ -80,6 +80,8 @@ ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: col
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    overflow: hidden;
+    position: relative;
 }
 
 .blue-team .pick-slot { border-color: #2980b9; background: linear-gradient(90deg, rgba(41,128,185,0.2) 0%, transparent 100%); }
@@ -136,12 +138,12 @@ ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: col
     gap: 15px;
 }
 
-/* The New Hero Portraits */
+/* API Image and Button Styling */
 .hero-btn {
     background-color: #1a2538;
     color: #bdc3c7;
     border: 2px solid transparent;
-    border-radius: 50%; /* Makes them circular like the game */
+    border-radius: 50%;
     aspect-ratio: 1 / 1;
     cursor: pointer;
     font-weight: bold;
@@ -150,10 +152,32 @@ ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: col
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.hero-btn span {
+    position: absolute;
+    font-size: 0.6rem;
+    background: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    padding: 2px 0;
+    color: white;
 }
 
 .hero-btn:hover { border-color: #f1c40f; transform: scale(1.1); }
-.hero-btn.selected-focus { border-color: #f1c40f; box-shadow: 0 0 10px #f1c40f; } /* When you click a hero before locking it in */
+.hero-btn.selected-focus { border-color: #f1c40f; box-shadow: 0 0 10px #f1c40f; transform: scale(1.1); }
 
 .hero-btn.banned { opacity: 0.3; filter: grayscale(100%); pointer-events: none; border-color: #e74c3c; }
 .hero-btn.picked { opacity: 0.3; pointer-events: none; }
