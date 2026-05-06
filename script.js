@@ -1,4 +1,4 @@
-// --- 1. THE BRAINS: FULL DATABASE WITH LANES ---
+// --- 1. THE HERO DATABASE & LANES ---
 const matchupData = {
     // --- TANKS ---
     "Akai": { lanes: ["Jungle", "Roam", "EXP"], counteredBy: ["Diggie", "Valir", "Franco"], synergies: ["Pharsa", "Odette"] },
@@ -144,190 +144,223 @@ const matchupData = {
     "Rafaela": { lanes: ["Roam"], counteredBy: ["Chou", "Franco", "Kaja"], synergies: ["Bruno", "Irithel"] }
 };
 
+// --- 2. THE DRAFT STATE ---
 const draftState = {
-    allies: [],
-    enemies: []
+    blueBans: [],
+    redBans: [],
+    bluePicks: [],
+    redPicks: [],
+    selectedHeroFocus: null // The hero you currently clicked on but haven't locked in
 };
 
+// --- 3. INITIALIZATION ---
 function init() {
-    const heroButtons = document.querySelectorAll('.hero-btn');
-    heroButtons.forEach(button => {
-        button.addEventListener('click', (e) => handlePick(e.target, 'ally'));
-        button.addEventListener('contextmenu', (e) => {
-            e.preventDefault(); 
-            handlePick(e.target, 'enemy');
+    renderHeroGrid("All");
+
+    // Hook up Lane Filters
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            let filterMap = { "All Lanes": "All", "Roam": "Roam", "EXP": "EXP", "Jungle": "Jungle", "Mid": "Mid", "Gold": "Gold" };
+            renderHeroGrid(filterMap[e.target.innerText]);
         });
+    });
+
+    // Hook up Action Buttons
+    document.getElementById('btn-ban').addEventListener('click', () => handleAction('ban'));
+    document.getElementById('btn-pick-blue').addEventListener('click', () => handleAction('blue'));
+    document.getElementById('btn-pick-red').addEventListener('click', () => handleAction('red'));
+}
+
+// --- 4. RENDER HERO GRID ---
+function renderHeroGrid(laneFilter) {
+    const grid = document.getElementById('main-hero-grid');
+    grid.innerHTML = ''; // Clear current heroes
+
+    let heroes = Object.keys(matchupData).sort();
+
+    heroes.forEach(heroName => {
+        let heroData = matchupData[heroName];
+
+        // Filter out heroes that don't belong in the selected lane
+        if (laneFilter !== "All" && !heroData.lanes.includes(laneFilter)) return;
+
+        let btn = document.createElement('div');
+        btn.classList.add('hero-btn');
+        btn.innerText = heroName;
+
+        // Check if already picked or banned to visually disable them
+        if (draftState.blueBans.includes(heroName) || draftState.redBans.includes(heroName)) btn.classList.add('banned');
+        if (draftState.bluePicks.includes(heroName) || draftState.redPicks.includes(heroName)) btn.classList.add('picked');
+
+        // Handle Clicking to Focus
+        btn.addEventListener('click', () => {
+            if (btn.classList.contains('banned') || btn.classList.contains('picked')) return;
+            
+            // Remove focus from all others
+            document.querySelectorAll('.hero-btn').forEach(b => b.classList.remove('selected-focus'));
+            btn.classList.add('selected-focus');
+            draftState.selectedHeroFocus = heroName;
+        });
+
+        grid.appendChild(btn);
     });
 }
 
-function handlePick(button, team) {
-    if (button.classList.contains('ally-selected') || button.classList.contains('enemy-selected')) return;
+// --- 5. HANDLING LOCK INS (BANS/PICKS) ---
+function handleAction(actionType) {
+    if (!draftState.selectedHeroFocus) return alert("Select a hero first!");
+    
+    let hero = draftState.selectedHeroFocus;
 
-    const heroName = button.innerText;
-    const heroRole = button.dataset.role;
-
-    if (team === 'ally') {
-        if (draftState.allies.length >= 5) return alert("Your team is full!");
-        draftState.allies.push({ name: heroName, role: heroRole });
-        button.classList.add('ally-selected');
-        updateDraftBoard('ally-picks', heroName);
-    } else {
-        if (draftState.enemies.length >= 5) return alert("Enemy team is full!");
-        draftState.enemies.push({ name: heroName, role: heroRole });
-        button.classList.add('enemy-selected');
-        updateDraftBoard('enemy-picks', heroName);
+    if (actionType === 'ban') {
+        if (draftState.blueBans.length < 5) {
+            draftState.blueBans.push(hero);
+            updateSlots('.blue-bans .ban-slot', draftState.blueBans);
+        } else if (draftState.redBans.length < 5) {
+            draftState.redBans.push(hero);
+            updateSlots('.red-bans .ban-slot', draftState.redBans);
+        } else {
+            return alert("All bans are full!");
+        }
+    } 
+    else if (actionType === 'blue') {
+        if (draftState.bluePicks.length >= 5) return alert("Blue team is full!");
+        draftState.bluePicks.push(hero);
+        updateSlots('.blue-team .pick-slot', draftState.bluePicks);
+    } 
+    else if (actionType === 'red') {
+        if (draftState.redPicks.length >= 5) return alert("Red team is full!");
+        draftState.redPicks.push(hero);
+        updateSlots('.red-team .pick-slot', draftState.redPicks);
     }
 
+    draftState.selectedHeroFocus = null; // Clear focus
+    
+    // Refresh the grid to gray out the picked/banned hero
+    let currentFilter = document.querySelector('.filter-btn.active').innerText;
+    let filterMap = { "All Lanes": "All", "Roam": "Roam", "EXP": "EXP", "Jungle": "Jungle", "Mid": "Mid", "Gold": "Gold" };
+    renderHeroGrid(filterMap[currentFilter]);
+
     calculateRecommendations();
-    calculateWinRate(); // Run the probability engine!
+    calculateWinRate();
 }
 
-function updateDraftBoard(listId, heroName) {
-    const list = document.getElementById(listId);
-    const listItem = document.createElement('li');
-    listItem.innerText = heroName;
-    list.appendChild(listItem);
+// --- 6. UPDATE VISUAL SLOTS ---
+function updateSlots(selector, dataArray) {
+    let slots = document.querySelectorAll(selector);
+    for (let i = 0; i < slots.length; i++) {
+        if (dataArray[i]) {
+            slots[i].innerText = dataArray[i];
+            slots[i].style.backgroundImage = "none"; // Clears empty state style if you added one
+        }
+    }
 }
 
-// --- WIN PROBABILITY ENGINE ---
+// --- 7. WIN PROBABILITY ENGINE ---
 function calculateWinRate() {
     const display = document.getElementById('win-rate-display');
     if (!display) return;
 
-    // Start at a 50% baseline
     let winChance = 50; 
 
-    // Rule 1: Add points for countering the enemy
-    draftState.enemies.forEach(enemy => {
-        let enemyData = matchupData[enemy.name];
+    // Counter points (Blue countering Red)
+    draftState.redPicks.forEach(enemy => {
+        let enemyData = matchupData[enemy];
         if (enemyData && enemyData.counteredBy) {
-            draftState.allies.forEach(ally => {
-                if (enemyData.counteredBy.includes(ally.name)) {
-                    winChance += 6; // +6% per hard counter drafted
-                }
+            draftState.bluePicks.forEach(ally => {
+                if (enemyData.counteredBy.includes(ally)) winChance += 6; 
             });
         }
     });
 
-    // Rule 2: Add points for team synergy
-    draftState.allies.forEach(ally => {
-        let allyData = matchupData[ally.name];
+    // Synergy points (Blue team combos)
+    draftState.bluePicks.forEach(ally => {
+        let allyData = matchupData[ally];
         if (allyData && allyData.synergies) {
-            draftState.allies.forEach(teammate => {
-                if (allyData.synergies.includes(teammate.name)) {
-                    winChance += 3; // +3% per good combo
-                }
+            draftState.bluePicks.forEach(teammate => {
+                if (allyData.synergies.includes(teammate)) winChance += 3; 
             });
         }
     });
 
-    // Rule 3: Lane / Role Penalties (Only applies when your draft is getting full)
-    if (draftState.allies.length >= 3) {
+    // Role Penalties
+    if (draftState.bluePicks.length >= 3) {
         let teamLanes = [];
-        draftState.allies.forEach(ally => {
-            if (matchupData[ally.name]) {
-                // Collect every lane these heroes could possibly play
-                teamLanes.push(...matchupData[ally.name].lanes);
-            }
+        draftState.bluePicks.forEach(ally => {
+            if (matchupData[ally]) teamLanes.push(...matchupData[ally].lanes);
         });
 
-        // Severe penalty if your team lacks a Jungler or Roamer
         if (!teamLanes.includes("Jungle")) winChance -= 15;
         if (!teamLanes.includes("Roam")) winChance -= 15;
-        
-        // Small penalty if missing standard damage lanes
         if (!teamLanes.includes("Gold")) winChance -= 5;
         if (!teamLanes.includes("Mid")) winChance -= 5;
     }
 
-    // Rule 4: Clamp the percentage so it looks realistic (between 15% and 85%)
     winChance = Math.max(15, Math.min(85, winChance));
-
-    // Update the HTML
-    display.innerText = `Predicted Win Rate: ${winChance}%`;
+    display.innerText = `Win Rate: ${winChance}%`;
     
-    // Change color based on how good the draft is
-    if (winChance >= 60) display.style.color = "#2ecc71"; // Green
-    else if (winChance <= 40) display.style.color = "#e74c3c"; // Red
-    else display.style.color = "#f1c40f"; // Yellow
+    if (winChance >= 60) display.style.color = "#2ecc71"; 
+    else if (winChance <= 40) display.style.color = "#e74c3c"; 
+    else display.style.color = "#f1c40f"; 
 }
 
+// --- 8. AI RECOMMENDATIONS ---
 function calculateRecommendations() {
     const recommendationsPanel = document.getElementById('top-picks');
     
-    if (draftState.allies.length === 0 && draftState.enemies.length === 0) {
-        recommendationsPanel.innerHTML = '<li>Waiting for draft to start...</li>';
+    if (draftState.bluePicks.length === 0 && draftState.redPicks.length === 0) {
+        recommendationsPanel.innerHTML = '<li>Waiting for draft...</li>';
         return;
     }
 
-    let allButtons = Array.from(document.querySelectorAll('.hero-btn'));
-    let availableHeroes = allButtons
-        .filter(btn => !btn.classList.contains('ally-selected') && !btn.classList.contains('enemy-selected'))
-        .map(btn => btn.innerText);
+    // Filter out ANY hero that is picked OR banned
+    let availableHeroes = Object.keys(matchupData).filter(hero => 
+        !draftState.bluePicks.includes(hero) && 
+        !draftState.redPicks.includes(hero) &&
+        !draftState.blueBans.includes(hero) &&
+        !draftState.redBans.includes(hero)
+    );
     
     let scores = {};
     availableHeroes.forEach(hero => scores[hero] = 0);
 
-    // Score Counters
-    draftState.enemies.forEach(enemy => {
-        if (matchupData[enemy.name] && matchupData[enemy.name].counteredBy) {
-            matchupData[enemy.name].counteredBy.forEach(counterHero => {
+    draftState.redPicks.forEach(enemy => {
+        if (matchupData[enemy] && matchupData[enemy].counteredBy) {
+            matchupData[enemy].counteredBy.forEach(counterHero => {
                 if (scores[counterHero] !== undefined) scores[counterHero] += 10; 
             });
         }
     });
 
-    // Score Synergies
-    draftState.allies.forEach(ally => {
-        if (matchupData[ally.name] && matchupData[ally.name].synergies) {
-            matchupData[ally.name].synergies.forEach(synergyHero => {
+    draftState.bluePicks.forEach(ally => {
+        if (matchupData[ally] && matchupData[ally].synergies) {
+            matchupData[ally].synergies.forEach(synergyHero => {
                 if (scores[synergyHero] !== undefined) scores[synergyHero] += 5; 
             });
         }
     });
 
-    // Smart Lane Balancing: Filter out roles we don't need anymore!
-    if (draftState.allies.length >= 3) {
-        let pickedLanes = new Set();
-        // Since flex picks have multiple lanes, we just record all possibilities
-        draftState.allies.forEach(ally => {
-            if (matchupData[ally.name]) {
-                // If a hero can only play ONE lane (like Fanny = Jungle), lock it in
-                if (matchupData[ally.name].lanes.length === 1) {
-                    pickedLanes.add(matchupData[ally.name].lanes[0]);
-                }
-            }
-        });
-
-        // If Jungle is definitively taken, heavily penalize other pure Junglers
-        if (pickedLanes.has("Jungle")) {
-            availableHeroes.forEach(hero => {
-                if (matchupData[hero] && matchupData[hero].lanes.includes("Jungle") && matchupData[hero].lanes.length === 1) {
-                    scores[hero] -= 50; 
-                }
-            });
-        }
-    }
-
     let sortedRecommendations = availableHeroes.sort((a, b) => scores[b] - scores[a]);
     recommendationsPanel.innerHTML = ''; 
-    let recommendationsFound = false;
 
+    let outputCount = 0;
     for (let i = 0; i < sortedRecommendations.length; i++) {
         let heroName = sortedRecommendations[i];
         let heroScore = scores[heroName];
 
         if (heroScore > 0) {
             let listItem = document.createElement('li');
-            listItem.innerText = `${heroName} (+${heroScore} pts)`; 
+            listItem.innerText = `${heroName} (+${heroScore})`; 
             recommendationsPanel.appendChild(listItem);
-            recommendationsFound = true;
+            outputCount++;
         }
-        if (recommendationsPanel.children.length >= 5) break; 
+        if (outputCount >= 5) break; 
     }
 
-    if (!recommendationsFound) {
-        recommendationsPanel.innerHTML = '<li>No strong counters found yet.</li>';
+    if (outputCount === 0) {
+        recommendationsPanel.innerHTML = '<li>No clear counters yet.</li>';
     }
 }
 
