@@ -150,14 +150,34 @@ const draftState = {
     redBans: [],
     bluePicks: [],
     redPicks: [],
-    selectedHeroFocus: null // The hero you currently clicked on but haven't locked in
+    selectedHeroFocus: null 
 };
 
-// --- 3. INITIALIZATION ---
-function init() {
+// --- API IMAGES CACHE ---
+let heroImages = {}; 
+
+// --- 3. INITIALIZATION (ASYNCHRONOUS) ---
+async function init() {
+    try {
+        console.log("Fetching MLBB API...");
+        const response = await fetch('https://raw.githubusercontent.com/p3hndrx/MLBB-API/main/v1/hero-meta-final.json');
+        
+        if (response.ok) {
+            const apiData = await response.json();
+            
+            apiData.forEach(hero => {
+                let name = hero.hero_name; 
+                let imgUrl = hero.hero_avatar;
+                if (name && imgUrl) heroImages[name] = imgUrl;
+            });
+            console.log("Hero portraits loaded!");
+        }
+    } catch (error) {
+        console.error("Failed to load hero images. Falling back to text.", error);
+    }
+
     renderHeroGrid("All");
 
-    // Hook up Lane Filters
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -167,7 +187,6 @@ function init() {
         });
     });
 
-    // Hook up Action Buttons
     document.getElementById('btn-ban').addEventListener('click', () => handleAction('ban'));
     document.getElementById('btn-pick-blue').addEventListener('click', () => handleAction('blue'));
     document.getElementById('btn-pick-red').addEventListener('click', () => handleAction('red'));
@@ -176,29 +195,30 @@ function init() {
 // --- 4. RENDER HERO GRID ---
 function renderHeroGrid(laneFilter) {
     const grid = document.getElementById('main-hero-grid');
-    grid.innerHTML = ''; // Clear current heroes
+    grid.innerHTML = ''; 
 
     let heroes = Object.keys(matchupData).sort();
 
     heroes.forEach(heroName => {
         let heroData = matchupData[heroName];
 
-        // Filter out heroes that don't belong in the selected lane
         if (laneFilter !== "All" && !heroData.lanes.includes(laneFilter)) return;
 
         let btn = document.createElement('div');
         btn.classList.add('hero-btn');
-        btn.innerText = heroName;
+        
+        if (heroImages[heroName]) {
+            btn.innerHTML = `<img src="${heroImages[heroName]}" alt="${heroName}" title="${heroName}"><span>${heroName}</span>`;
+        } else {
+            btn.innerHTML = `<span>${heroName}</span>`; 
+        }
 
-        // Check if already picked or banned to visually disable them
         if (draftState.blueBans.includes(heroName) || draftState.redBans.includes(heroName)) btn.classList.add('banned');
         if (draftState.bluePicks.includes(heroName) || draftState.redPicks.includes(heroName)) btn.classList.add('picked');
 
-        // Handle Clicking to Focus
         btn.addEventListener('click', () => {
             if (btn.classList.contains('banned') || btn.classList.contains('picked')) return;
             
-            // Remove focus from all others
             document.querySelectorAll('.hero-btn').forEach(b => b.classList.remove('selected-focus'));
             btn.classList.add('selected-focus');
             draftState.selectedHeroFocus = heroName;
@@ -208,7 +228,7 @@ function renderHeroGrid(laneFilter) {
     });
 }
 
-// --- 5. HANDLING LOCK INS (BANS/PICKS) ---
+// --- 5. HANDLING LOCK INS ---
 function handleAction(actionType) {
     if (!draftState.selectedHeroFocus) return alert("Select a hero first!");
     
@@ -236,9 +256,8 @@ function handleAction(actionType) {
         updateSlots('.red-team .pick-slot', draftState.redPicks);
     }
 
-    draftState.selectedHeroFocus = null; // Clear focus
+    draftState.selectedHeroFocus = null; 
     
-    // Refresh the grid to gray out the picked/banned hero
     let currentFilter = document.querySelector('.filter-btn.active').innerText;
     let filterMap = { "All Lanes": "All", "Roam": "Roam", "EXP": "EXP", "Jungle": "Jungle", "Mid": "Mid", "Gold": "Gold" };
     renderHeroGrid(filterMap[currentFilter]);
@@ -247,13 +266,19 @@ function handleAction(actionType) {
     calculateWinRate();
 }
 
-// --- 6. UPDATE VISUAL SLOTS ---
+// --- 6. UPDATE VISUAL SLOTS (NOW WITH IMAGES) ---
 function updateSlots(selector, dataArray) {
     let slots = document.querySelectorAll(selector);
     for (let i = 0; i < slots.length; i++) {
         if (dataArray[i]) {
-            slots[i].innerText = dataArray[i];
-            slots[i].style.backgroundImage = "none"; // Clears empty state style if you added one
+            let heroName = dataArray[i];
+            
+            // If the API provided an image, inject it directly into the side panel/ban slot
+            if (heroImages[heroName]) {
+                slots[i].innerHTML = `<img src="${heroImages[heroName]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
+            } else {
+                slots[i].innerText = heroName;
+            }
         }
     }
 }
@@ -265,7 +290,6 @@ function calculateWinRate() {
 
     let winChance = 50; 
 
-    // Counter points (Blue countering Red)
     draftState.redPicks.forEach(enemy => {
         let enemyData = matchupData[enemy];
         if (enemyData && enemyData.counteredBy) {
@@ -275,7 +299,6 @@ function calculateWinRate() {
         }
     });
 
-    // Synergy points (Blue team combos)
     draftState.bluePicks.forEach(ally => {
         let allyData = matchupData[ally];
         if (allyData && allyData.synergies) {
@@ -285,7 +308,6 @@ function calculateWinRate() {
         }
     });
 
-    // Role Penalties
     if (draftState.bluePicks.length >= 3) {
         let teamLanes = [];
         draftState.bluePicks.forEach(ally => {
@@ -315,7 +337,6 @@ function calculateRecommendations() {
         return;
     }
 
-    // Filter out ANY hero that is picked OR banned
     let availableHeroes = Object.keys(matchupData).filter(hero => 
         !draftState.bluePicks.includes(hero) && 
         !draftState.redPicks.includes(hero) &&
