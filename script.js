@@ -156,7 +156,7 @@ const draftState = {
 // --- API IMAGES CACHE ---
 let heroImages = {}; 
 
-// --- 3. INITIALIZATION (ASYNCHRONOUS) ---
+// --- 3. INITIALIZATION (BULLETPROOF VERSION) ---
 async function init() {
     try {
         console.log("Fetching MLBB API...");
@@ -165,9 +165,12 @@ async function init() {
         if (response.ok) {
             const apiData = await response.json();
             
-            apiData.forEach(hero => {
-                let name = hero.hero_name; 
-                let imgUrl = hero.hero_avatar;
+            // This line safely handles the data whether the API sends an Array or an Object
+            let heroesList = Array.isArray(apiData) ? apiData : Object.values(apiData);
+            
+            heroesList.forEach(hero => {
+                let name = hero.hero_name || hero.name; 
+                let imgUrl = hero.hero_avatar || hero.avatar || hero.icon;
                 if (name && imgUrl) heroImages[name] = imgUrl;
             });
             console.log("Hero portraits loaded!");
@@ -176,8 +179,10 @@ async function init() {
         console.error("Failed to load hero images. Falling back to text.", error);
     }
 
+    // Generate the grid
     renderHeroGrid("All");
 
+    // Hook up Lane Filters
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -187,6 +192,7 @@ async function init() {
         });
     });
 
+    // Hook up Action Buttons
     document.getElementById('btn-ban').addEventListener('click', () => handleAction('ban'));
     document.getElementById('btn-pick-blue').addEventListener('click', () => handleAction('blue'));
     document.getElementById('btn-pick-red').addEventListener('click', () => handleAction('red'));
