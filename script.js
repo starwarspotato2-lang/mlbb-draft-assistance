@@ -21,13 +21,7 @@ function init() {
     document.getElementById('btn-pick-red').addEventListener('click', () => handleAction('red'));
 }
 
-// --- 3. THE FALLBACK IMAGE SYSTEM ---
-// If the main image breaks, it generates a beautiful golden icon with the hero's initials!
-function getFallbackImage(heroName) {
-    return `https://ui-avatars.com/api/?name=${heroName}&background=151f32&color=f1c40f&bold=true&size=150`;
-}
-
-// --- 4. RENDER HERO GRID ---
+// --- 3. RENDER HERO GRID ---
 function renderHeroGrid(laneFilter) {
     const grid = document.getElementById('main-hero-grid');
     grid.innerHTML = ''; 
@@ -41,13 +35,12 @@ function renderHeroGrid(laneFilter) {
         let btn = document.createElement('div');
         btn.classList.add('hero-btn');
         
-        // This is the magic bulletproof image tag
-        let primaryImg = getHeroImage(heroName);
-        let fallbackImg = getFallbackImage(heroName);
+        let primaryImg = heroImages[heroName];
         
+        // If image fails to load, it falls back to the clean logo provided in data.js
         btn.innerHTML = `
             <img src="${primaryImg}" alt="${heroName}" title="${heroName}" 
-                 onerror="this.onerror=null; this.src='${fallbackImg}';">
+                 onerror="this.onerror=null; this.src='${FALLBACK_ICON}'; this.style.opacity='0.4';">
             <span class="hero-fallback-text">${heroName}</span>
         `;
 
@@ -65,7 +58,7 @@ function renderHeroGrid(laneFilter) {
     });
 }
 
-// --- 5. HANDLING LOCK INS ---
+// --- 4. HANDLING LOCK INS ---
 function handleAction(actionType) {
     if (!draftState.selectedHeroFocus) return alert("Select a hero first!");
     
@@ -102,24 +95,24 @@ function handleAction(actionType) {
     calculateWinRate();
 }
 
-// --- 6. UPDATE VISUAL SLOTS ---
+// --- 5. UPDATE VISUAL SLOTS ---
 function updateSlots(selector, dataArray) {
     let slots = document.querySelectorAll(selector);
     for (let i = 0; i < slots.length; i++) {
         if (dataArray[i]) {
             let heroName = dataArray[i];
-            let primaryImg = getHeroImage(heroName);
-            let fallbackImg = getFallbackImage(heroName);
+            let primaryImg = heroImages[heroName];
             
             slots[i].innerHTML = `
                 <img src="${primaryImg}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" 
-                     onerror="this.onerror=null; this.src='${fallbackImg}';">
+                     onerror="this.onerror=null; this.src='${FALLBACK_ICON}'; this.style.opacity='0.4';">
+                <span class="hero-fallback-text" style="font-size: 0.6rem;">${heroName}</span>
             `;
         }
     }
 }
 
-// --- 7. WIN PROBABILITY ENGINE ---
+// --- 6. WIN PROBABILITY ENGINE ---
 function calculateWinRate() {
     const display = document.getElementById('win-rate-display');
     const blueBar = document.getElementById('win-bar-blue');
@@ -153,74 +146,3 @@ function calculateWinRate() {
         });
 
         if (!teamLanes.includes("Jungle")) blueChance -= 15;
-        if (!teamLanes.includes("Roam")) blueChance -= 15;
-        if (!teamLanes.includes("Gold")) blueChance -= 5;
-        if (!teamLanes.includes("Mid")) blueChance -= 5;
-    }
-
-    blueChance = Math.max(10, Math.min(90, blueChance));
-    let redChance = 100 - blueChance;
-
-    blueBar.style.width = `${blueChance}%`;
-    redBar.style.width = `${redChance}%`;
-    display.innerText = `${blueChance}% - ${redChance}%`;
-}
-
-// --- 8. AI RECOMMENDATIONS ---
-function calculateRecommendations() {
-    const recommendationsPanel = document.getElementById('top-picks');
-    
-    if (draftState.bluePicks.length === 0 && draftState.redPicks.length === 0) {
-        recommendationsPanel.innerHTML = '<li>Waiting for draft...</li>';
-        return;
-    }
-
-    let availableHeroes = Object.keys(matchupData).filter(hero => 
-        !draftState.bluePicks.includes(hero) && 
-        !draftState.redPicks.includes(hero) &&
-        !draftState.blueBans.includes(hero) &&
-        !draftState.redBans.includes(hero)
-    );
-    
-    let scores = {};
-    availableHeroes.forEach(hero => scores[hero] = 0);
-
-    draftState.redPicks.forEach(enemy => {
-        if (matchupData[enemy] && matchupData[enemy].counteredBy) {
-            matchupData[enemy].counteredBy.forEach(counterHero => {
-                if (scores[counterHero] !== undefined) scores[counterHero] += 10; 
-            });
-        }
-    });
-
-    draftState.bluePicks.forEach(ally => {
-        if (matchupData[ally] && matchupData[ally].synergies) {
-            matchupData[ally].synergies.forEach(synergyHero => {
-                if (scores[synergyHero] !== undefined) scores[synergyHero] += 5; 
-            });
-        }
-    });
-
-    let sortedRecommendations = availableHeroes.sort((a, b) => scores[b] - scores[a]);
-    recommendationsPanel.innerHTML = ''; 
-
-    let outputCount = 0;
-    for (let i = 0; i < sortedRecommendations.length; i++) {
-        let heroName = sortedRecommendations[i];
-        let heroScore = scores[heroName];
-
-        if (heroScore > 0) {
-            let listItem = document.createElement('li');
-            listItem.innerText = `${heroName} (+${heroScore})`; 
-            recommendationsPanel.appendChild(listItem);
-            outputCount++;
-        }
-        if (outputCount >= 5) break; 
-    }
-
-    if (outputCount === 0) {
-        recommendationsPanel.innerHTML = '<li>No clear counters yet.</li>';
-    }
-}
-
-window.onload = init;
