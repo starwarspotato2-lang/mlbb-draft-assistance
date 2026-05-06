@@ -1,6 +1,5 @@
 // --- 1. THE HERO DATABASE & LANES ---
 const matchupData = {
-    // --- TANKS ---
     "Akai": { lanes: ["Jungle", "Roam", "EXP"], counteredBy: ["Diggie", "Valir", "Franco"], synergies: ["Pharsa", "Odette"] },
     "Atlas": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Chou"], synergies: ["Pharsa", "Yve", "Claude"] },
     "Barats": { lanes: ["Jungle", "EXP"], counteredBy: ["Karrie", "Lunox", "X.Borg"], synergies: ["Estes", "Floryn"] },
@@ -20,8 +19,6 @@ const matchupData = {
     "Minotaur": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Chou"], synergies: ["Claude", "Irithel"] },
     "Tigreal": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Akai"], synergies: ["Pharsa", "Odette"] },
     "Uranus": { lanes: ["EXP"], counteredBy: ["Baxia", "Esmeralda", "Karrie"], synergies: ["Estes", "Angela"] },
-
-    // --- FIGHTERS ---
     "Aldous": { lanes: ["EXP", "Mid"], counteredBy: ["Chou", "Valir", "Diggie"], synergies: ["Angela", "Estes"] },
     "Alpha": { lanes: ["Jungle", "EXP"], counteredBy: ["Baxia", "Valir", "Chou"], synergies: ["Angela", "Estes"] },
     "Alucard": { lanes: ["Jungle"], counteredBy: ["Baxia", "Chou", "Valir"], synergies: ["Angela", "Estes"] },
@@ -62,8 +59,6 @@ const matchupData = {
     "Yin": { lanes: ["Jungle", "EXP"], counteredBy: ["Melissa", "Argus", "Valir"], synergies: ["Johnson", "Angela"] },
     "Yu Zhong": { lanes: ["EXP"], counteredBy: ["Baxia", "Dyrroth", "Wanwan"], synergies: ["Angela", "Estes"] },
     "Zilong": { lanes: ["EXP", "Gold"], counteredBy: ["Chou", "Khufra", "Valir"], synergies: ["Angela", "Estes"] },
-
-    // --- ASSASSINS ---
     "Aamon": { lanes: ["Jungle"], counteredBy: ["Saber", "Chou", "Kaja"], synergies: ["Tigreal", "Atlas"] },
     "Fanny": { lanes: ["Jungle"], counteredBy: ["Khufra", "Franco", "Saber"], synergies: ["Angela", "Estes"] },
     "Gusion": { lanes: ["Jungle", "Mid"], counteredBy: ["Ruby", "Chou", "Khufra"], synergies: ["Tigreal", "Atlas"] },
@@ -79,8 +74,6 @@ const matchupData = {
     "Saber": { lanes: ["Jungle", "Roam"], counteredBy: ["Argus", "Diggie", "Tigreal"], synergies: ["Johnson", "Angela"] },
     "Selena": { lanes: ["Roam", "Mid"], counteredBy: ["Diggie", "Chou", "Khufra"], synergies: ["Franco", "Beatrix"] },
     "Yi Sun-shin": { lanes: ["Jungle"], counteredBy: ["Chou", "Khufra", "Natalia"], synergies: ["Angela", "Estes"] },
-
-    // --- MAGES ---
     "Alice": { lanes: ["Mid", "EXP", "Jungle"], counteredBy: ["Baxia", "Valir", "Karrie"], synergies: ["Angela", "Estes"] },
     "Aurora": { lanes: ["Mid", "Roam"], counteredBy: ["Chou", "Franco", "Saber"], synergies: ["Tigreal", "Atlas"] },
     "Cecilion": { lanes: ["Mid"], counteredBy: ["Aldous", "Chou", "Franco"], synergies: ["Carmilla", "Tigreal"] },
@@ -110,8 +103,6 @@ const matchupData = {
     "Zetian": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber"], synergies: ["Tigreal", "Atlas"] },
     "Zhask": { lanes: ["Mid", "Gold"], counteredBy: ["Claude", "Chou", "Franco"], synergies: ["Tigreal", "Atlas"] },
     "Zhuxin": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber"], synergies: ["Tigreal", "Atlas"] },
-
-    // --- MARKSMEN ---
     "Beatrix": { lanes: ["Gold", "Mid"], counteredBy: ["Natalia", "Chou", "Franco"], synergies: ["Tigreal", "Atlas"] },
     "Brody": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Kaja"], synergies: ["Mathilda", "Tigreal"] },
     "Bruno": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Kaja"], synergies: ["Diggie", "Mathilda"] },
@@ -132,8 +123,6 @@ const matchupData = {
     "Obsidia": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Saber"], synergies: ["Tigreal", "Atlas"] },
     "Popol and Kupa": { lanes: ["Gold", "Jungle", "Roam"], counteredBy: ["Chou", "Franco", "Saber"], synergies: ["Tigreal", "Atlas"] },
     "Wanwan": { lanes: ["Gold"], counteredBy: ["Phoveus", "Khufra", "Franco"], synergies: ["Mathilda", "Angela"] },
-
-    // --- SUPPORTS ---
     "Angela": { lanes: ["Roam", "Mid"], counteredBy: ["Chou", "Franco", "Kaja"], synergies: ["Ling", "Leomord"] },
     "Diggie": { lanes: ["Roam"], counteredBy: ["Natalia", "Aldous", "Hilda"], synergies: ["Claude", "Karrie"] },
     "Estes": { lanes: ["Roam"], counteredBy: ["Baxia", "Atlas", "Carmilla"], synergies: ["Aldous", "Fanny"] },
@@ -144,45 +133,39 @@ const matchupData = {
     "Rafaela": { lanes: ["Roam"], counteredBy: ["Chou", "Franco", "Kaja"], synergies: ["Bruno", "Irithel"] }
 };
 
-// --- 2. THE DRAFT STATE ---
 const draftState = {
-    blueBans: [],
-    redBans: [],
-    bluePicks: [],
-    redPicks: [],
-    selectedHeroFocus: null 
+    blueBans: [], redBans: [], bluePicks: [], redPicks: [], selectedHeroFocus: null 
 };
 
-// --- API IMAGES CACHE ---
 let heroImages = {}; 
 
-// --- 3. INITIALIZATION (BULLETPROOF VERSION) ---
+// --- 3. INITIALIZATION (BULLETPROOF API FETCH) ---
 async function init() {
     try {
-        console.log("Fetching MLBB API...");
-        const response = await fetch('https://raw.githubusercontent.com/p3hndrx/MLBB-API/main/v1/hero-meta-final.json');
+        console.log("Fetching Hero Images from OpenMLBB...");
+        // Try the new API endpoint
+        const response = await fetch('https://openmlbb.fastapicloud.dev/api/v1/heroes')
+            .catch(() => fetch('https://raw.githubusercontent.com/p3hndrx/MLBB-API/main/v1/hero-meta-final.json')); // Ultimate Fallback
         
-        if (response.ok) {
-            const apiData = await response.json();
-            
-            // This line safely handles the data whether the API sends an Array or an Object
+        if (response && response.ok) {
+            const rawData = await response.json();
+            // Handle APIs that wrap data in 'data' object or return a raw array
+            let apiData = rawData.data || rawData.result || rawData;
             let heroesList = Array.isArray(apiData) ? apiData : Object.values(apiData);
             
             heroesList.forEach(hero => {
-                let name = hero.hero_name || hero.name; 
-                let imgUrl = hero.hero_avatar || hero.avatar || hero.icon;
+                let name = hero.hero_name || hero.name || hero.title; 
+                let imgUrl = hero.hero_avatar || hero.avatar || hero.icon || hero.image;
                 if (name && imgUrl) heroImages[name] = imgUrl;
             });
-            console.log("Hero portraits loaded!");
+            console.log("Hero portraits loaded successfully!");
         }
     } catch (error) {
-        console.error("Failed to load hero images. Falling back to text.", error);
+        console.error("API failed. Falling back to text mode.", error);
     }
 
-    // Generate the grid
     renderHeroGrid("All");
 
-    // Hook up Lane Filters
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -192,7 +175,6 @@ async function init() {
         });
     });
 
-    // Hook up Action Buttons
     document.getElementById('btn-ban').addEventListener('click', () => handleAction('ban'));
     document.getElementById('btn-pick-blue').addEventListener('click', () => handleAction('blue'));
     document.getElementById('btn-pick-red').addEventListener('click', () => handleAction('red'));
@@ -207,16 +189,19 @@ function renderHeroGrid(laneFilter) {
 
     heroes.forEach(heroName => {
         let heroData = matchupData[heroName];
-
         if (laneFilter !== "All" && !heroData.lanes.includes(laneFilter)) return;
 
         let btn = document.createElement('div');
         btn.classList.add('hero-btn');
         
+        // Include fallback text that shows up if the image link is broken or missing
+        let fallbackText = `<span class="hero-fallback-text">${heroName}</span>`;
+        
         if (heroImages[heroName]) {
-            btn.innerHTML = `<img src="${heroImages[heroName]}" alt="${heroName}" title="${heroName}"><span>${heroName}</span>`;
+            // Added onerror event: if the image breaks, it hides the image and displays the text!
+            btn.innerHTML = `<img src="${heroImages[heroName]}" alt="${heroName}" title="${heroName}" onerror="this.style.display='none';">${fallbackText}`;
         } else {
-            btn.innerHTML = `<span>${heroName}</span>`; 
+            btn.innerHTML = fallbackText; 
         }
 
         if (draftState.blueBans.includes(heroName) || draftState.redBans.includes(heroName)) btn.classList.add('banned');
@@ -224,7 +209,6 @@ function renderHeroGrid(laneFilter) {
 
         btn.addEventListener('click', () => {
             if (btn.classList.contains('banned') || btn.classList.contains('picked')) return;
-            
             document.querySelectorAll('.hero-btn').forEach(b => b.classList.remove('selected-focus'));
             btn.classList.add('selected-focus');
             draftState.selectedHeroFocus = heroName;
@@ -263,7 +247,6 @@ function handleAction(actionType) {
     }
 
     draftState.selectedHeroFocus = null; 
-    
     let currentFilter = document.querySelector('.filter-btn.active').innerText;
     let filterMap = { "All Lanes": "All", "Roam": "Roam", "EXP": "EXP", "Jungle": "Jungle", "Mid": "Mid", "Gold": "Gold" };
     renderHeroGrid(filterMap[currentFilter]);
@@ -272,16 +255,15 @@ function handleAction(actionType) {
     calculateWinRate();
 }
 
-// --- 6. UPDATE VISUAL SLOTS (NOW WITH IMAGES) ---
+// --- 6. UPDATE VISUAL SLOTS ---
 function updateSlots(selector, dataArray) {
     let slots = document.querySelectorAll(selector);
     for (let i = 0; i < slots.length; i++) {
         if (dataArray[i]) {
             let heroName = dataArray[i];
             
-            // If the API provided an image, inject it directly into the side panel/ban slot
             if (heroImages[heroName]) {
-                slots[i].innerHTML = `<img src="${heroImages[heroName]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;">`;
+                slots[i].innerHTML = `<img src="${heroImages[heroName]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" onerror="this.style.display='none'; this.nextSibling.style.display='block';"><span style="display:none; font-size: 0.6rem;">${heroName}</span>`;
             } else {
                 slots[i].innerText = heroName;
             }
@@ -289,18 +271,20 @@ function updateSlots(selector, dataArray) {
     }
 }
 
-// --- 7. WIN PROBABILITY ENGINE ---
+// --- 7. WIN PROBABILITY ENGINE (CLASH BAR EDITION) ---
 function calculateWinRate() {
     const display = document.getElementById('win-rate-display');
-    if (!display) return;
+    const blueBar = document.getElementById('win-bar-blue');
+    const redBar = document.getElementById('win-bar-red');
+    if (!display || !blueBar || !redBar) return;
 
-    let winChance = 50; 
+    let blueChance = 50; 
 
     draftState.redPicks.forEach(enemy => {
         let enemyData = matchupData[enemy];
         if (enemyData && enemyData.counteredBy) {
             draftState.bluePicks.forEach(ally => {
-                if (enemyData.counteredBy.includes(ally)) winChance += 6; 
+                if (enemyData.counteredBy.includes(ally)) blueChance += 6; 
             });
         }
     });
@@ -309,7 +293,7 @@ function calculateWinRate() {
         let allyData = matchupData[ally];
         if (allyData && allyData.synergies) {
             draftState.bluePicks.forEach(teammate => {
-                if (allyData.synergies.includes(teammate)) winChance += 3; 
+                if (allyData.synergies.includes(teammate)) blueChance += 3; 
             });
         }
     });
@@ -320,18 +304,18 @@ function calculateWinRate() {
             if (matchupData[ally]) teamLanes.push(...matchupData[ally].lanes);
         });
 
-        if (!teamLanes.includes("Jungle")) winChance -= 15;
-        if (!teamLanes.includes("Roam")) winChance -= 15;
-        if (!teamLanes.includes("Gold")) winChance -= 5;
-        if (!teamLanes.includes("Mid")) winChance -= 5;
+        if (!teamLanes.includes("Jungle")) blueChance -= 15;
+        if (!teamLanes.includes("Roam")) blueChance -= 15;
+        if (!teamLanes.includes("Gold")) blueChance -= 5;
+        if (!teamLanes.includes("Mid")) blueChance -= 5;
     }
 
-    winChance = Math.max(15, Math.min(85, winChance));
-    display.innerText = `Win Rate: ${winChance}%`;
-    
-    if (winChance >= 60) display.style.color = "#2ecc71"; 
-    else if (winChance <= 40) display.style.color = "#e74c3c"; 
-    else display.style.color = "#f1c40f"; 
+    blueChance = Math.max(10, Math.min(90, blueChance));
+    let redChance = 100 - blueChance;
+
+    blueBar.style.width = `${blueChance}%`;
+    redBar.style.width = `${redChance}%`;
+    display.innerText = `${blueChance}% - ${redChance}%`;
 }
 
 // --- 8. AI RECOMMENDATIONS ---
