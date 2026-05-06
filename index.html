@@ -3,210 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLBB Draft Assistant</title>
+    <title>MLBB Draft Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <header>
-        <h1>MLBB Draft Assistant ⚔️</h1>
-        <p>Select heroes to see real-time counter recommendations.</p>
+    <header id="draft-header">
+        <div class="ban-section blue-bans" id="blue-bans">
+            <div class="ban-slot"></div><div class="ban-slot"></div><div class="ban-slot"></div><div class="ban-slot"></div><div class="ban-slot"></div>
+        </div>
+        
+        <div class="draft-status">
+            <h2 id="phase-indicator">BAN PHASE</h2>
+            <h3 id="win-rate-display" style="color: #f1c40f;">Win Rate: 50%</h3>
+        </div>
+
+        <div class="ban-section red-bans" id="red-bans">
+            <div class="ban-slot"></div><div class="ban-slot"></div><div class="ban-slot"></div><div class="ban-slot"></div><div class="ban-slot"></div>
+        </div>
     </header>
 
-    <main>
-        <section id="draft-board">
-            <div class="team ally-team">
-                <h2>Your Team (Blue)</h2>
-                <ul id="ally-picks">
-                    </ul>
+    <main id="draft-arena">
+        
+        <aside class="team-panel blue-team">
+            <ul id="ally-picks">
+                <li class="pick-slot"></li><li class="pick-slot"></li><li class="pick-slot"></li><li class="pick-slot"></li><li class="pick-slot"></li>
+            </ul>
+        </aside>
+
+        <section id="center-console">
+            
+            <div id="recommendations-banner">
+                <h4>Top Counters</h4>
+                <ul id="top-picks"><li>Waiting for draft...</li></ul>
+            </div>
+
+            <nav id="role-filters">
+                <button class="filter-btn active" data-filter="All">All Lanes</button>
+                <button class="filter-btn" data-filter="Tank">Roam</button>
+                <button class="filter-btn" data-filter="Fighter">EXP</button>
+                <button class="filter-btn" data-filter="Assassin">Jungle</button>
+                <button class="filter-btn" data-filter="Mage">Mid</button>
+                <button class="filter-btn" data-filter="Marksman">Gold</button>
+            </nav>
+
+            <div id="hero-pool-scroll">
+                <div class="hero-grid" id="main-hero-grid">
+                    </div>
             </div>
             
-            <div class="team enemy-team">
-                <h2>Enemy Team (Red)</h2>
-                <ul id="enemy-picks">
-                    </ul>
+            <div id="action-bar">
+                <button id="btn-ban" class="action-btn">Ban Hero</button>
+                <button id="btn-pick-blue" class="action-btn blue-btn">Pick Blue</button>
+                <button id="btn-pick-red" class="action-btn red-btn">Pick Red</button>
             </div>
         </section>
 
-        <section id="recommendations">
-            <h2>Recommended Picks</h2>
-            <h3 id="win-rate-display" style="color: #f1c40f; margin-top: 0;">Predicted Win Rate: 50%</h3>
-            <ol id="top-picks">
-                <li>Waiting for draft to start...</li>
-            </ol>
-        </section>
+        <aside class="team-panel red-team">
+            <ul id="enemy-picks">
+                <li class="pick-slot"></li><li class="pick-slot"></li><li class="pick-slot"></li><li class="pick-slot"></li><li class="pick-slot"></li>
+            </ul>
+        </aside>
 
-        <section id="hero-pool">
-            <h2>Hero Roster</h2>
-
-            <div class="role-category" id="role-tank">
-                <h3>Tanks</h3>
-                <div class="hero-grid">
-                    <button class="hero-btn" data-role="Tank">Akai</button>
-                    <button class="hero-btn" data-role="Tank">Atlas</button>
-                    <button class="hero-btn" data-role="Tank">Barats</button>
-                    <button class="hero-btn" data-role="Tank">Baxia</button>
-                    <button class="hero-btn" data-role="Tank">Belerick</button>
-                    <button class="hero-btn" data-role="Tank">Carmilla</button>
-                    <button class="hero-btn" data-role="Tank">Chip</button>
-                    <button class="hero-btn" data-role="Tank">Edith</button>
-                    <button class="hero-btn" data-role="Tank">Franco</button>
-                    <button class="hero-btn" data-role="Tank">Fredrinn</button>
-                    <button class="hero-btn" data-role="Tank">Gatotkaca</button>
-                    <button class="hero-btn" data-role="Tank">Gloo</button>
-                    <button class="hero-btn" data-role="Tank">Grock</button>
-                    <button class="hero-btn" data-role="Tank">Hylos</button>
-                    <button class="hero-btn" data-role="Tank">Johnson</button>
-                    <button class="hero-btn" data-role="Tank">Khufra</button>
-                    <button class="hero-btn" data-role="Tank">Minotaur</button>
-                    <button class="hero-btn" data-role="Tank">Tigreal</button>
-                    <button class="hero-btn" data-role="Tank">Uranus</button>
-                </div>
-            </div>
-
-            <div class="role-category" id="role-fighter">
-                <h3>Fighters</h3>
-                <div class="hero-grid">
-                    <button class="hero-btn" data-role="Fighter">Aldous</button>
-                    <button class="hero-btn" data-role="Fighter">Alpha</button>
-                    <button class="hero-btn" data-role="Fighter">Alucard</button>
-                    <button class="hero-btn" data-role="Fighter">Argus</button>
-                    <button class="hero-btn" data-role="Fighter">Arlott</button>
-                    <button class="hero-btn" data-role="Fighter">Aulus</button>
-                    <button class="hero-btn" data-role="Fighter">Badang</button>
-                    <button class="hero-btn" data-role="Fighter">Balmond</button>
-                    <button class="hero-btn" data-role="Fighter">Bane</button>
-                    <button class="hero-btn" data-role="Fighter">Benedetta</button>
-                    <button class="hero-btn" data-role="Fighter">Chou</button>
-                    <button class="hero-btn" data-role="Fighter">Cici</button>
-                    <button class="hero-btn" data-role="Fighter">Dyrroth</button>
-                    <button class="hero-btn" data-role="Fighter">Freya</button>
-                    <button class="hero-btn" data-role="Fighter">Guinevere</button>
-                    <button class="hero-btn" data-role="Fighter">Hilda</button>
-                    <button class="hero-btn" data-role="Fighter">Jawhead</button>
-                    <button class="hero-btn" data-role="Fighter">Julian</button>
-                    <button class="hero-btn" data-role="Fighter">Kalea</button>
-                    <button class="hero-btn" data-role="Fighter">Khaleed</button>
-                    <button class="hero-btn" data-role="Fighter">Lapu-Lapu</button>
-                    <button class="hero-btn" data-role="Fighter">Leomord</button>
-                    <button class="hero-btn" data-role="Fighter">Lukas</button>
-                    <button class="hero-btn" data-role="Fighter">Martis</button>
-                    <button class="hero-btn" data-role="Fighter">Masha</button>
-                    <button class="hero-btn" data-role="Fighter">Minsitthar</button>
-                    <button class="hero-btn" data-role="Fighter">Paquito</button>
-                    <button class="hero-btn" data-role="Fighter">Phoveus</button>
-                    <button class="hero-btn" data-role="Fighter">Roger</button>
-                    <button class="hero-btn" data-role="Fighter">Ruby</button>
-                    <button class="hero-btn" data-role="Fighter">Silvanna</button>
-                    <button class="hero-btn" data-role="Fighter">Sora</button>
-                    <button class="hero-btn" data-role="Fighter">Sun</button>
-                    <button class="hero-btn" data-role="Fighter">Suyou</button>
-                    <button class="hero-btn" data-role="Fighter">Terizla</button>
-                    <button class="hero-btn" data-role="Fighter">Thamuz</button>
-                    <button class="hero-btn" data-role="Fighter">X.Borg</button>
-                    <button class="hero-btn" data-role="Fighter">Yin</button>
-                    <button class="hero-btn" data-role="Fighter">Yu Zhong</button>
-                    <button class="hero-btn" data-role="Fighter">Zilong</button>
-                </div>
-            </div>
-
-            <div class="role-category" id="role-assassin">
-                <h3>Assassins</h3>
-                <div class="hero-grid">
-                    <button class="hero-btn" data-role="Assassin">Aamon</button>
-                    <button class="hero-btn" data-role="Assassin">Fanny</button>
-                    <button class="hero-btn" data-role="Assassin">Gusion</button>
-                    <button class="hero-btn" data-role="Assassin">Hanzo</button>
-                    <button class="hero-btn" data-role="Assassin">Hayabusa</button>
-                    <button class="hero-btn" data-role="Assassin">Helcurt</button>
-                    <button class="hero-btn" data-role="Assassin">Joy</button>
-                    <button class="hero-btn" data-role="Assassin">Karina</button>
-                    <button class="hero-btn" data-role="Assassin">Lancelot</button>
-                    <button class="hero-btn" data-role="Assassin">Ling</button>
-                    <button class="hero-btn" data-role="Assassin">Natalia</button>
-                    <button class="hero-btn" data-role="Assassin">Nolan</button>
-                    <button class="hero-btn" data-role="Assassin">Saber</button>
-                    <button class="hero-btn" data-role="Assassin">Selena</button>
-                    <button class="hero-btn" data-role="Assassin">Yi Sun-shin</button>
-                </div>
-            </div>
-
-            <div class="role-category" id="role-mage">
-                <h3>Mages</h3>
-                <div class="hero-grid">
-                    <button class="hero-btn" data-role="Mage">Alice</button>
-                    <button class="hero-btn" data-role="Mage">Aurora</button>
-                    <button class="hero-btn" data-role="Mage">Cecilion</button>
-                    <button class="hero-btn" data-role="Mage">Chang'e</button>
-                    <button class="hero-btn" data-role="Mage">Cyclops</button>
-                    <button class="hero-btn" data-role="Mage">Esmeralda</button>
-                    <button class="hero-btn" data-role="Mage">Eudora</button>
-                    <button class="hero-btn" data-role="Mage">Faramis</button>
-                    <button class="hero-btn" data-role="Mage">Gord</button>
-                    <button class="hero-btn" data-role="Mage">Harith</button>
-                    <button class="hero-btn" data-role="Mage">Harley</button>
-                    <button class="hero-btn" data-role="Mage">Kadita</button>
-                    <button class="hero-btn" data-role="Mage">Kagura</button>
-                    <button class="hero-btn" data-role="Mage">Lunox</button>
-                    <button class="hero-btn" data-role="Mage">Luo Yi</button>
-                    <button class="hero-btn" data-role="Mage">Lylia</button>
-                    <button class="hero-btn" data-role="Mage">Nana</button>
-                    <button class="hero-btn" data-role="Mage">Novaria</button>
-                    <button class="hero-btn" data-role="Mage">Odette</button>
-                    <button class="hero-btn" data-role="Mage">Pharsa</button>
-                    <button class="hero-btn" data-role="Mage">Vale</button>
-                    <button class="hero-btn" data-role="Mage">Valentina</button>
-                    <button class="hero-btn" data-role="Mage">Valir</button>
-                    <button class="hero-btn" data-role="Mage">Vexana</button>
-                    <button class="hero-btn" data-role="Mage">Xavier</button>
-                    <button class="hero-btn" data-role="Mage">Yve</button>
-                    <button class="hero-btn" data-role="Mage">Zetian</button>
-                    <button class="hero-btn" data-role="Mage">Zhask</button>
-                    <button class="hero-btn" data-role="Mage">Zhuxin</button>
-                </div>
-            </div>
-
-            <div class="role-category" id="role-marksman">
-                <h3>Marksmen</h3>
-                <div class="hero-grid">
-                    <button class="hero-btn" data-role="Marksman">Beatrix</button>
-                    <button class="hero-btn" data-role="Marksman">Brody</button>
-                    <button class="hero-btn" data-role="Marksman">Bruno</button>
-                    <button class="hero-btn" data-role="Marksman">Claude</button>
-                    <button class="hero-btn" data-role="Marksman">Clint</button>
-                    <button class="hero-btn" data-role="Marksman">Granger</button>
-                    <button class="hero-btn" data-role="Marksman">Hanabi</button>
-                    <button class="hero-btn" data-role="Marksman">Irithel</button>
-                    <button class="hero-btn" data-role="Marksman">Ixia</button>
-                    <button class="hero-btn" data-role="Marksman">Karrie</button>
-                    <button class="hero-btn" data-role="Marksman">Kimmy</button>
-                    <button class="hero-btn" data-role="Marksman">Layla</button>
-                    <button class="hero-btn" data-role="Marksman">Lesley</button>
-                    <button class="hero-btn" data-role="Marksman">Melissa</button>
-                    <button class="hero-btn" data-role="Marksman">Miya</button>
-                    <button class="hero-btn" data-role="Marksman">Moskov</button>
-                    <button class="hero-btn" data-role="Marksman">Natan</button>
-                    <button class="hero-btn" data-role="Marksman">Obsidia</button>
-                    <button class="hero-btn" data-role="Marksman">Popol and Kupa</button>
-                    <button class="hero-btn" data-role="Marksman">Wanwan</button>
-                </div>
-            </div>
-
-            <div class="role-category" id="role-support">
-                <h3>Supports</h3>
-                <div class="hero-grid">
-                    <button class="hero-btn" data-role="Support">Angela</button>
-                    <button class="hero-btn" data-role="Support">Diggie</button>
-                    <button class="hero-btn" data-role="Support">Estes</button>
-                    <button class="hero-btn" data-role="Support">Floryn</button>
-                    <button class="hero-btn" data-role="Support">Kaja</button>
-                    <button class="hero-btn" data-role="Support">Lolita</button>
-                    <button class="hero-btn" data-role="Support">Mathilda</button>
-                    <button class="hero-btn" data-role="Support">Rafaela</button>
-                </div>
-            </div>
-
-        </section>
     </main>
 
     <script src="script.js"></script>
