@@ -1,29 +1,153 @@
 // --- data.js ---
-// This file completely handles all 132 hero images.
+// Comprehensive MLBB Database: Lanes, Counters, and Synergies
 
+const matchupData = {
+    // --- TANKS & SUPPORTS ---
+    "Akai": { lanes: ["Jungle", "Roam", "EXP"], counteredBy: ["Diggie", "Valir", "Franco", "Claude"], synergies: ["Pharsa", "Odette", "Claude"] },
+    "Atlas": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Chou", "Valentina"], synergies: ["Pharsa", "Yve", "Claude"] },
+    "Baxia": { lanes: ["Jungle", "Roam"], counteredBy: ["Valir", "X.Borg", "Karrie", "Lunox"], synergies: ["Angela", "Mathilda", "Pharsa"] },
+    "Belerick": { lanes: ["Roam", "EXP"], counteredBy: ["Valir", "X.Borg", "Lylia", "Lunox"], synergies: ["Angela", "Mathilda", "Estes"] },
+    "Carmilla": { lanes: ["Roam", "Jungle"], counteredBy: ["Diggie", "Valir", "Chou", "Franco"], synergies: ["Cecilion", "Claude", "Pharsa"] },
+    "Chip": { lanes: ["Roam", "EXP"], counteredBy: ["Diggie", "Valir", "Baxia", "Minsitthar"], synergies: ["Kadita", "Odette", "Tigreal"] },
+    "Edith": { lanes: ["EXP", "Roam"], counteredBy: ["Karrie", "Lunox", "Valir", "Chou"], synergies: ["Estes", "Angela", "Tigreal"] },
+    "Estes": { lanes: ["Roam"], counteredBy: ["Baxia", "Atlas", "Carmilla", "Luo Yi"], synergies: ["Aldous", "Fanny", "Barats"] },
+    "Franco": { lanes: ["Roam"], counteredBy: ["Diggie", "Johnson", "Atlas", "Gloo"], synergies: ["Beatrix", "Moskov", "Selena"] },
+    "Fredrinn": { lanes: ["Jungle", "EXP"], counteredBy: ["Karrie", "Lunox", "Valir", "Baxia"], synergies: ["Estes", "Angela", "Mathilda"] },
+    "Gatotkaca": { lanes: ["EXP", "Roam"], counteredBy: ["Valir", "X.Borg", "Lylia", "Karrie"], synergies: ["Angela", "Mathilda", "Pharsa"] },
+    "Gloo": { lanes: ["EXP", "Roam"], counteredBy: ["Faramis", "Vexana", "Valir", "Alpha"], synergies: ["Estes", "Angela", "Yve"] },
+    "Grock": { lanes: ["Roam", "EXP"], counteredBy: ["Valir", "X.Borg", "Lylia", "Karrie"], synergies: ["Beatrix", "Moskov", "Selena"] },
+    "Hylos": { lanes: ["Roam", "Jungle"], counteredBy: ["Valir", "Karrie", "Baxia", "Lunox"], synergies: ["Angela", "Estes", "Pharsa"] },
+    "Johnson": { lanes: ["Roam"], counteredBy: ["Diggie", "Grock", "Baxia", "Valir"], synergies: ["Odette", "Kadita", "Badang"] },
+    "Khufra": { lanes: ["Roam"], counteredBy: ["Valir", "Franco", "Diggie", "Chou"], synergies: ["Esmeralda", "Fanny", "Ling"] },
+    "Minotaur": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Chou", "Franco"], synergies: ["Claude", "Irithel", "Pharsa"] },
+    "Tigreal": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Akai", "Chou"], synergies: ["Pharsa", "Odette", "Claude"] },
+    "Uranus": { lanes: ["EXP"], counteredBy: ["Baxia", "Esmeralda", "Karrie", "Lunox"], synergies: ["Estes", "Angela", "Mathilda"] },
+    "Angela": { lanes: ["Roam", "Mid"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Ling", "Leomord", "Aldous"] },
+    "Diggie": { lanes: ["Roam"], counteredBy: ["Natalia", "Aldous", "Hilda", "Joy"], synergies: ["Claude", "Karrie", "Ling"] },
+    "Floryn": { lanes: ["Roam"], counteredBy: ["Baxia", "Natalia", "Chou", "Saber"], synergies: ["Leomord", "Aulus", "Fanny"] },
+    "Kaja": { lanes: ["Roam", "EXP"], counteredBy: ["Valir", "Grock", "Baxia", "Chou"], synergies: ["Chou", "Franco", "Saber"] },
+    "Lolita": { lanes: ["Roam"], counteredBy: ["Chou", "Franco", "Kaja", "Esmeralda"], synergies: ["Claude", "Karrie", "Wanwan"] },
+    "Mathilda": { lanes: ["Roam", "Mid"], counteredBy: ["Khufra", "Minsitthar", "Franco", "Kaja"], synergies: ["Claude", "Karrie", "Brody"] },
+    "Rafaela": { lanes: ["Roam"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Bruno", "Irithel", "Brody"] },
+
+    // --- FIGHTERS ---
+    "Aldous": { lanes: ["EXP", "Mid"], counteredBy: ["Chou", "Valir", "Diggie", "Akai"], synergies: ["Angela", "Estes", "Johnson"] },
+    "Alpha": { lanes: ["Jungle", "EXP"], counteredBy: ["Baxia", "Valir", "Chou", "Lunox"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Alucard": { lanes: ["Jungle"], counteredBy: ["Baxia", "Chou", "Valir", "Khufra"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Argus": { lanes: ["EXP", "Gold"], counteredBy: ["Valir", "Chou", "Franco", "Kaja"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Arlott": { lanes: ["EXP", "Roam"], counteredBy: ["Phoveus", "Minsitthar", "Khufra", "Ruby"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Aulus": { lanes: ["Jungle"], counteredBy: ["Chou", "Valir", "Baxia", "Khufra"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Badang": { lanes: ["EXP"], counteredBy: ["Chou", "Valir", "Khufra", "Phoveus"], synergies: ["Johnson", "Atlas", "Tigreal"] },
+    "Balmond": { lanes: ["Jungle", "EXP"], counteredBy: ["Valir", "Baxia", "Karrie", "Lunox"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Bane": { lanes: ["Jungle", "EXP", "Mid"], counteredBy: ["Chou", "Valir", "Khufra", "Lancelot"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Barats": { lanes: ["Jungle", "EXP"], counteredBy: ["Karrie", "Lunox", "X.Borg", "Valir"], synergies: ["Estes", "Floryn", "Rafaela"] },
+    "Benedetta": { lanes: ["EXP", "Jungle"], counteredBy: ["Minsitthar", "Khufra", "Phoveus", "Chou"], synergies: ["Angela", "Tigreal", "Atlas"] },
+    "Chou": { lanes: ["EXP", "Roam"], counteredBy: ["Paquito", "Gusion", "Hayabusa", "Benedetta"], synergies: ["Brody", "Beatrix", "Clint"] },
+    "Cici": { lanes: ["EXP"], counteredBy: ["Baxia", "Chou", "Phoveus", "Khufra"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Dyrroth": { lanes: ["EXP", "Jungle"], counteredBy: ["Chou", "Paquito", "Thamuz", "Guinevere"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Freya": { lanes: ["EXP", "Jungle"], counteredBy: ["Baxia", "Valir", "Chou", "Khufra"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Guinevere": { lanes: ["EXP", "Jungle", "Roam"], counteredBy: ["Chou", "Kaja", "Valir", "Franco"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Hilda": { lanes: ["Roam", "EXP"], counteredBy: ["Valir", "Karrie", "Baxia", "Lunox"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Jawhead": { lanes: ["Jungle", "Roam", "EXP"], counteredBy: ["Valir", "Chou", "Khufra", "Baxia"], synergies: ["Angela", "Mathilda", "Tigreal"] },
+    "Julian": { lanes: ["Jungle", "Mid", "EXP"], counteredBy: ["Chou", "Phoveus", "Khufra", "Saber"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Kalea": { lanes: ["EXP"], counteredBy: ["Chou", "Khufra", "Baxia", "Valir"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Khaleed": { lanes: ["EXP", "Roam"], counteredBy: ["Baxia", "Chou", "Valir", "Khufra"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Lapu-Lapu": { lanes: ["EXP"], counteredBy: ["Chou", "Khufra", "Valir", "Baxia"], synergies: ["Angela", "Tigreal", "Atlas"] },
+    "Leomord": { lanes: ["Jungle", "EXP"], counteredBy: ["Chou", "Khufra", "Valir", "Baxia"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Lukas": { lanes: ["EXP"], counteredBy: ["Chou", "Valir", "Baxia", "Khufra"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Martis": { lanes: ["Jungle", "EXP"], counteredBy: ["Phoveus", "Gusion", "Lancelot", "Benedetta"], synergies: ["Angela", "Mathilda", "Tigreal"] },
+    "Masha": { lanes: ["EXP", "Roam"], counteredBy: ["Baxia", "Valir", "Chou", "Karrie"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Minsitthar": { lanes: ["EXP", "Roam"], counteredBy: ["Valir", "Chou", "Diggie", "Karrie"], synergies: ["Tigreal", "Atlas", "Pharsa"] },
+    "Paquito": { lanes: ["EXP", "Jungle"], counteredBy: ["Benedetta", "Chou", "Esmeralda", "Phoveus"], synergies: ["Angela", "Mathilda", "Tigreal"] },
+    "Phoveus": { lanes: ["EXP"], counteredBy: ["Esmeralda", "Lunox", "Karrie", "Baxia"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Roger": { lanes: ["Jungle", "Gold"], counteredBy: ["Baxia", "Chou", "Khufra", "Valir"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Ruby": { lanes: ["EXP", "Roam"], counteredBy: ["Valir", "Pharsa", "Yve", "Lunox"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Silvanna": { lanes: ["EXP", "Jungle"], counteredBy: ["Chou", "Diggie", "Valir", "Kadita"], synergies: ["Johnson", "Tigreal", "Atlas"] },
+    "Sora": { lanes: ["EXP"], counteredBy: ["Chou", "Khufra", "Baxia", "Franco"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Sun": { lanes: ["EXP", "Jungle"], counteredBy: ["Balmond", "X.Borg", "Valir", "Baxia"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Suyou": { lanes: ["EXP", "Jungle"], counteredBy: ["Chou", "Valir", "Baxia", "Khufra"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Terizla": { lanes: ["EXP"], counteredBy: ["Valir", "Wanwan", "Claude", "Karrie"], synergies: ["Angela", "Estes", "Atlas"] },
+    "Thamuz": { lanes: ["EXP", "Jungle"], counteredBy: ["Baxia", "Valir", "Karrie", "Lunox"], synergies: ["Angela", "Estes", "Diggie"] },
+    "X.Borg": { lanes: ["EXP", "Jungle"], counteredBy: ["Baxia", "Valir", "Karrie", "Chou"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Yin": { lanes: ["Jungle", "EXP"], counteredBy: ["Melissa", "Argus", "Valir", "Pharsa"], synergies: ["Johnson", "Angela"] },
+    "Yu Zhong": { lanes: ["EXP"], counteredBy: ["Baxia", "Dyrroth", "Wanwan", "Karrie"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Zilong": { lanes: ["EXP", "Gold"], counteredBy: ["Chou", "Khufra", "Valir", "Baxia"], synergies: ["Angela", "Estes", "Tigreal"] },
+
+    // --- ASSASSINS ---
+    "Aamon": { lanes: ["Jungle"], counteredBy: ["Saber", "Chou", "Kaja", "Franco"], synergies: ["Tigreal", "Atlas", "Mathilda"] },
+    "Fanny": { lanes: ["Jungle"], counteredBy: ["Khufra", "Franco", "Saber", "Minsitthar", "Moskov"], synergies: ["Angela", "Estes", "Floryn"] },
+    "Gusion": { lanes: ["Jungle", "Mid"], counteredBy: ["Ruby", "Chou", "Khufra", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Hanzo": { lanes: ["Jungle"], counteredBy: ["Natalia", "Aldous", "Ling", "Fanny"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Hayabusa": { lanes: ["Jungle"], counteredBy: ["Saber", "Chou", "Khufra", "Ruby"], synergies: ["Angela", "Tigreal", "Atlas"] },
+    "Helcurt": { lanes: ["Jungle", "Roam"], counteredBy: ["Hylos", "Belerick", "Tigreal", "Aldous"], synergies: ["Natalia", "Aldous", "Yi Sun-shin"] },
+    "Joy": { lanes: ["EXP", "Jungle", "Mid"], counteredBy: ["Minsitthar", "Phoveus", "Franco", "Kaja"], synergies: ["Angela", "Estes", "Floryn"] },
+    "Karina": { lanes: ["Jungle"], counteredBy: ["Chou", "Franco", "Kaja", "Khufra"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Lancelot": { lanes: ["Jungle"], counteredBy: ["Khufra", "Ruby", "Phoveus", "Chou"], synergies: ["Angela", "Mathilda", "Rafaela"] },
+    "Ling": { lanes: ["Jungle"], counteredBy: ["Khufra", "Ruby", "Minsitthar", "Saber"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Natalia": { lanes: ["Roam", "Jungle"], counteredBy: ["Aldous", "Yi Sun-shin", "Rafaela", "Popol and Kupa"], synergies: ["Angela", "Mathilda", "Tigreal"] },
+    "Nolan": { lanes: ["Jungle"], counteredBy: ["Khufra", "Franco", "Saber", "Chou"], synergies: ["Angela", "Estes", "Floryn"] },
+    "Saber": { lanes: ["Jungle", "Roam"], counteredBy: ["Argus", "Diggie", "Tigreal", "Gatotkaca"], synergies: ["Johnson", "Angela", "Mathilda"] },
+    "Selena": { lanes: ["Roam", "Mid"], counteredBy: ["Diggie", "Chou", "Khufra", "Franco"], synergies: ["Franco", "Beatrix", "Tigreal"] },
+    "Yi Sun-shin": { lanes: ["Jungle"], counteredBy: ["Chou", "Khufra", "Natalia", "Ling"], synergies: ["Angela", "Estes", "Tigreal"] },
+
+    // --- MAGES ---
+    "Alice": { lanes: ["Mid", "EXP", "Jungle"], counteredBy: ["Baxia", "Valir", "Karrie", "Lunox"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Aurora": { lanes: ["Mid", "Roam"], counteredBy: ["Chou", "Franco", "Saber", "Lancelot"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Cecilion": { lanes: ["Mid"], counteredBy: ["Aldous", "Chou", "Franco", "Kaja"], synergies: ["Carmilla", "Tigreal", "Atlas"] },
+    "Chang'e": { lanes: ["Mid", "Gold"], counteredBy: ["Lolita", "Chou", "Franco"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Cyclops": { lanes: ["Mid", "Jungle"], counteredBy: ["Chou", "Lancelot", "Gusion", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Esmeralda": { lanes: ["EXP", "Mid"], counteredBy: ["Baxia", "Phoveus", "Karrie", "Dyrroth"], synergies: ["Angela", "Mathilda", "Carmilla"] },
+    "Eudora": { lanes: ["Mid", "Roam"], counteredBy: ["Chou", "Franco", "Saber", "Lancelot"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Faramis": { lanes: ["Mid", "Roam"], counteredBy: ["Valentina", "Chou", "Franco", "Kaja"], synergies: ["Gloo", "Tigreal", "Atlas"] },
+    "Gord": { lanes: ["Mid"], counteredBy: ["Chou", "Lancelot", "Gusion", "Saber"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Harith": { lanes: ["Gold", "Mid", "Jungle"], counteredBy: ["Baxia", "Esmeralda", "Khufra", "Chou"], synergies: ["Angela", "Estes", "Tigreal"] },
+    "Harley": { lanes: ["Jungle", "Mid"], counteredBy: ["Chou", "Saber", "Khufra", "Franco"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Kadita": { lanes: ["Mid", "Roam"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Johnson", "Tigreal", "Atlas"] },
+    "Kagura": { lanes: ["Mid"], counteredBy: ["Gusion", "Hayabusa", "Lancelot", "Chou"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Lunox": { lanes: ["Mid", "Jungle", "Gold"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Luo Yi": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Lancelot", "Hayabusa"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Lylia": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Nana": { lanes: ["Mid", "Roam"], counteredBy: ["Saber", "Hayabusa", "Gusion", "Lancelot"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Novaria": { lanes: ["Mid", "Roam"], counteredBy: ["Natalia", "Ling", "Fanny", "Aldous"], synergies: ["Franco", "Selena", "Beatrix"] },
+    "Odette": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber", "Kaja"], synergies: ["Johnson", "Tigreal", "Atlas"] },
+    "Pharsa": { lanes: ["Mid"], counteredBy: ["Chou", "Khufra", "Franco", "Kaja"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Vale": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber", "Lancelot"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Valentina": { lanes: ["Mid", "EXP"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Valir": { lanes: ["Mid", "Roam"], counteredBy: ["Chou", "Lancelot", "Hayabusa", "Gusion"], synergies: ["Tigreal", "Atlas", "Hylos"] },
+    "Vexana": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Lancelot", "Saber"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Xavier": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber", "Natalia"], synergies: ["Tigreal", "Atlas", "Franco"] },
+    "Yve": { lanes: ["Mid"], counteredBy: ["Kaja", "Franco", "Chou", "Khufra"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Zetian": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber", "Khufra"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Zhask": { lanes: ["Mid", "Gold"], counteredBy: ["Claude", "Chou", "Franco"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Zhuxin": { lanes: ["Mid"], counteredBy: ["Chou", "Franco", "Saber", "Khufra"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+
+    // --- MARKSMEN ---
+    "Beatrix": { lanes: ["Gold", "Mid"], counteredBy: ["Natalia", "Chou", "Franco", "Kaja"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Brody": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Kaja", "Saber"], synergies: ["Mathilda", "Tigreal", "Atlas"] },
+    "Bruno": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Kaja", "Khufra"], synergies: ["Diggie", "Mathilda", "Angela"] },
+    "Claude": { lanes: ["Gold"], counteredBy: ["Belerick", "Chou", "Saber", "Franco"], synergies: ["Diggie", "Mathilda", "Angela"] },
+    "Clint": { lanes: ["Gold"], counteredBy: ["Beatrix", "Brody", "Popol and Kupa", "Chou"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Granger": { lanes: ["Jungle", "Gold"], counteredBy: ["Chou", "Khufra", "Franco", "Kaja"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Hanabi": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Saber", "Khufra"], synergies: ["Tigreal", "Atlas", "Belerick"] },
+    "Irithel": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Khufra", "Saber"], synergies: ["Tigreal", "Minotaur", "Atlas"] },
+    "Ixia": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Kaja", "Khufra"], synergies: ["Tigreal", "Minotaur", "Atlas"] },
+    "Karrie": { lanes: ["Gold"], counteredBy: ["Phoveus", "Chou", "Franco", "Kaja"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Kimmy": { lanes: ["Gold", "Mid", "Jungle"], counteredBy: ["Lolita", "Chou", "Franco", "Khufra"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Layla": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Saber", "Natalia"], synergies: ["Tigreal", "Atlas", "Belerick"] },
+    "Lesley": { lanes: ["Gold"], counteredBy: ["Aldous", "Saber", "Natalia", "Karina"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Melissa": { lanes: ["Gold"], counteredBy: ["Yin", "Phoveus", "Chou", "Franco"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Miya": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Saber", "Natalia"], synergies: ["Tigreal", "Atlas", "Belerick"] },
+    "Moskov": { lanes: ["Gold"], counteredBy: ["Belerick", "Chou", "Saber", "Franco"], synergies: ["Tigreal", "Atlas", "Johnson"] },
+    "Natan": { lanes: ["Gold", "Jungle"], counteredBy: ["Chou", "Franco", "Kaja", "Khufra"], synergies: ["Tigreal", "Atlas", "Mathilda"] },
+    "Obsidia": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Saber", "Khufra"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
+    "Popol and Kupa": { lanes: ["Gold", "Jungle", "Roam"], counteredBy: ["Chou", "Franco", "Saber", "Khufra"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Wanwan": { lanes: ["Gold"], counteredBy: ["Phoveus", "Khufra", "Franco", "Chou"], synergies: ["Mathilda", "Angela", "Diggie"] }
+};
+
+// --- THE BULLETPROOF IMAGE GENERATOR ---
 const IMAGE_BASE_URL = "https://openmlbb.fastapicloud.dev/static/hero_icon/"; 
 
-const allHeroes = [
-    "Aamon", "Akai", "Aldous", "Alice", "Alpha", "Alucard", "Angela", "Argus", "Arlott", "Atlas", 
-    "Aulus", "Aurora", "Badang", "Balmond", "Bane", "Barats", "Baxia", "Beatrix", "Belerick", "Benedetta", 
-    "Brody", "Bruno", "Carmilla", "Cecilion", "Chang'e", "Chip", "Chou", "Cici", "Claude", "Clint", 
-    "Cyclops", "Diggie", "Dyrroth", "Edith", "Esmeralda", "Estes", "Eudora", "Fanny", "Faramis", "Floryn", 
-    "Franco", "Fredrinn", "Freya", "Gatotkaca", "Gloo", "Gord", "Granger", "Grock", "Guinevere", "Gusion", 
-    "Hanabi", "Hanzo", "Harith", "Harley", "Hayabusa", "Helcurt", "Hilda", "Hylos", "Irithel", "Ixia", 
-    "Jawhead", "Johnson", "Joy", "Julian", "Kadita", "Kagura", "Kaja", "Kalea", "Karina", "Karrie", 
-    "Khaleed", "Khufra", "Kimmy", "Lancelot", "Lapu-Lapu", "Layla", "Leomord", "Lesley", "Ling", "Lolita", 
-    "Lukas", "Lunox", "Luo Yi", "Lylia", "Martis", "Masha", "Mathilda", "Melissa", "Minotaur", "Minsitthar", 
-    "Miya", "Moskov", "Nana", "Natan", "Natalia", "Nolan", "Novaria", "Obsidia", "Odette", "Paquito", 
-    "Pharsa", "Phoveus", "Popol and Kupa", "Rafaela", "Roger", "Ruby", "Saber", "Selena", "Silvanna", "Sora", 
-    "Sun", "Suyou", "Terizla", "Thamuz", "Tigreal", "Uranus", "Vale", "Valentina", "Valir", "Vexana", 
-    "Wanwan", "X.Borg", "Xavier", "Yi Sun-shin", "Yin", "Yu Zhong", "Yve", "Zetian", "Zhask", "Zhuxin", "Zilong"
-];
-
-const heroImages = {};
-
-allHeroes.forEach(hero => {
-    let formattedName = hero.toLowerCase().replace(/['\s-]/g, "_");
-    heroImages[hero] = `${IMAGE_BASE_URL}${formattedName}.png`;
-});
-
-console.log("data.js successfully generated 132 image links!");
+const getHeroImage = (heroName) => {
+    let formattedName = heroName.toLowerCase().replace(/['\s-]/g, "_");
+    return `${IMAGE_BASE_URL}${formattedName}.png`;
+};
