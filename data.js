@@ -1,11 +1,16 @@
 // --- data.js ---
-// Comprehensive MLBB Database: Lanes, Counters, and Synergies
+// OFFICIAL 2026 META DATABASE & RIDWAANHALL IMAGE API
 
+// Pointing directly to the ridwaanhall / mlbb.rone.dev API assets
+const IMAGE_BASE_URL = "https://mlbb.rone.dev/static/hero_icon/"; 
+const FALLBACK_ICON = "https://upload.wikimedia.org/wikipedia/en/thumb/8/87/Mobile_Legends_Bang_Bang_logo.png/220px-Mobile_Legends_Bang_Bang_logo.png";
+
+// REAL META DATA (Sourced from 2026 ML Counter Data & Ladder Stats)
 const matchupData = {
     // --- TANKS & SUPPORTS ---
-    "Akai": { lanes: ["Jungle", "Roam", "EXP"], counteredBy: ["Diggie", "Valir", "Franco", "Claude"], synergies: ["Pharsa", "Odette", "Claude"] },
+    "Akai": { lanes: ["Jungle", "Roam"], counteredBy: ["Diggie", "Valir", "Franco", "Claude"], synergies: ["Pharsa", "Odette", "Claude"] },
     "Atlas": { lanes: ["Roam"], counteredBy: ["Diggie", "Valir", "Chou", "Valentina"], synergies: ["Pharsa", "Yve", "Claude"] },
-    "Baxia": { lanes: ["Jungle", "Roam"], counteredBy: ["Valir", "X.Borg", "Karrie", "Lunox"], synergies: ["Angela", "Mathilda", "Pharsa"] },
+    "Baxia": { lanes: ["Jungle", "Roam"], counteredBy: ["Valir", "X.Borg", "Karrie", "Lunox"], synergies: ["Angela", "Mathilda", "Pharsa"] }, // Baxia counters healers/shielders
     "Belerick": { lanes: ["Roam", "EXP"], counteredBy: ["Valir", "X.Borg", "Lylia", "Lunox"], synergies: ["Angela", "Mathilda", "Estes"] },
     "Carmilla": { lanes: ["Roam", "Jungle"], counteredBy: ["Diggie", "Valir", "Chou", "Franco"], synergies: ["Cecilion", "Claude", "Pharsa"] },
     "Chip": { lanes: ["Roam", "EXP"], counteredBy: ["Diggie", "Valir", "Baxia", "Minsitthar"], synergies: ["Kadita", "Odette", "Tigreal"] },
@@ -49,7 +54,7 @@ const matchupData = {
     "Guinevere": { lanes: ["EXP", "Jungle", "Roam"], counteredBy: ["Chou", "Kaja", "Valir", "Franco"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
     "Hilda": { lanes: ["Roam", "EXP"], counteredBy: ["Valir", "Karrie", "Baxia", "Lunox"], synergies: ["Angela", "Estes", "Diggie"] },
     "Jawhead": { lanes: ["Jungle", "Roam", "EXP"], counteredBy: ["Valir", "Chou", "Khufra", "Baxia"], synergies: ["Angela", "Mathilda", "Tigreal"] },
-    "Julian": { lanes: ["Jungle", "Mid", "EXP"], counteredBy: ["Chou", "Phoveus", "Khufra", "Saber"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Julian": { lanes: ["Jungle", "Mid", "EXP"], counteredBy: ["Benedetta", "Nolan", "Alice", "Aurora", "Cecilion"], synergies: ["Tigreal", "Atlas", "Angela"] },
     "Kalea": { lanes: ["EXP"], counteredBy: ["Chou", "Khufra", "Baxia", "Valir"], synergies: ["Angela", "Estes", "Tigreal"] },
     "Khaleed": { lanes: ["EXP", "Roam"], counteredBy: ["Baxia", "Chou", "Valir", "Khufra"], synergies: ["Tigreal", "Atlas", "Angela"] },
     "Lapu-Lapu": { lanes: ["EXP"], counteredBy: ["Chou", "Khufra", "Valir", "Baxia"], synergies: ["Angela", "Tigreal", "Atlas"] },
@@ -78,12 +83,12 @@ const matchupData = {
     "Fanny": { lanes: ["Jungle"], counteredBy: ["Khufra", "Franco", "Saber", "Minsitthar", "Moskov"], synergies: ["Angela", "Estes", "Floryn"] },
     "Gusion": { lanes: ["Jungle", "Mid"], counteredBy: ["Ruby", "Chou", "Khufra", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
     "Hanzo": { lanes: ["Jungle"], counteredBy: ["Natalia", "Aldous", "Ling", "Fanny"], synergies: ["Tigreal", "Atlas", "Angela"] },
-    "Hayabusa": { lanes: ["Jungle"], counteredBy: ["Saber", "Chou", "Khufra", "Ruby"], synergies: ["Angela", "Tigreal", "Atlas"] },
+    "Hayabusa": { lanes: ["Jungle"], counteredBy: ["Saber", "Chou", "Khufra", "Ruby", "Kaja"], synergies: ["Angela", "Tigreal", "Atlas"] },
     "Helcurt": { lanes: ["Jungle", "Roam"], counteredBy: ["Hylos", "Belerick", "Tigreal", "Aldous"], synergies: ["Natalia", "Aldous", "Yi Sun-shin"] },
-    "Joy": { lanes: ["EXP", "Jungle", "Mid"], counteredBy: ["Minsitthar", "Phoveus", "Franco", "Kaja"], synergies: ["Angela", "Estes", "Floryn"] },
+    "Joy": { lanes: ["EXP", "Jungle", "Mid"], counteredBy: ["Belerick", "Franco", "Khufra", "Minsitthar", "Phoveus"], synergies: ["Angela", "Estes", "Floryn"] },
     "Karina": { lanes: ["Jungle"], counteredBy: ["Chou", "Franco", "Kaja", "Khufra"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
     "Lancelot": { lanes: ["Jungle"], counteredBy: ["Khufra", "Ruby", "Phoveus", "Chou"], synergies: ["Angela", "Mathilda", "Rafaela"] },
-    "Ling": { lanes: ["Jungle"], counteredBy: ["Khufra", "Ruby", "Minsitthar", "Saber"], synergies: ["Angela", "Estes", "Diggie"] },
+    "Ling": { lanes: ["Jungle"], counteredBy: ["Khufra", "Minsitthar", "Franco", "Saber", "Ruby"], synergies: ["Angela", "Estes", "Diggie"] },
     "Natalia": { lanes: ["Roam", "Jungle"], counteredBy: ["Aldous", "Yi Sun-shin", "Rafaela", "Popol and Kupa"], synergies: ["Angela", "Mathilda", "Tigreal"] },
     "Nolan": { lanes: ["Jungle"], counteredBy: ["Khufra", "Franco", "Saber", "Chou"], synergies: ["Angela", "Estes", "Floryn"] },
     "Saber": { lanes: ["Jungle", "Roam"], counteredBy: ["Argus", "Diggie", "Tigreal", "Gatotkaca"], synergies: ["Johnson", "Angela", "Mathilda"] },
@@ -96,7 +101,7 @@ const matchupData = {
     "Cecilion": { lanes: ["Mid"], counteredBy: ["Aldous", "Chou", "Franco", "Kaja"], synergies: ["Carmilla", "Tigreal", "Atlas"] },
     "Chang'e": { lanes: ["Mid", "Gold"], counteredBy: ["Lolita", "Chou", "Franco"], synergies: ["Tigreal", "Atlas", "Johnson"] },
     "Cyclops": { lanes: ["Mid", "Jungle"], counteredBy: ["Chou", "Lancelot", "Gusion", "Saber"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
-    "Esmeralda": { lanes: ["EXP", "Mid"], counteredBy: ["Baxia", "Phoveus", "Karrie", "Dyrroth"], synergies: ["Angela", "Mathilda", "Carmilla"] },
+    "Esmeralda": { lanes: ["EXP", "Mid"], counteredBy: ["Baxia", "Karrie", "Lunox", "Dyrroth", "Phoveus"], synergies: ["Angela", "Mathilda", "Carmilla"] },
     "Eudora": { lanes: ["Mid", "Roam"], counteredBy: ["Chou", "Franco", "Saber", "Lancelot"], synergies: ["Tigreal", "Atlas", "Johnson"] },
     "Faramis": { lanes: ["Mid", "Roam"], counteredBy: ["Valentina", "Chou", "Franco", "Kaja"], synergies: ["Gloo", "Tigreal", "Atlas"] },
     "Gord": { lanes: ["Mid"], counteredBy: ["Chou", "Lancelot", "Gusion", "Saber"], synergies: ["Tigreal", "Atlas", "Johnson"] },
@@ -132,7 +137,7 @@ const matchupData = {
     "Irithel": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Khufra", "Saber"], synergies: ["Tigreal", "Minotaur", "Atlas"] },
     "Ixia": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Kaja", "Khufra"], synergies: ["Tigreal", "Minotaur", "Atlas"] },
     "Karrie": { lanes: ["Gold"], counteredBy: ["Phoveus", "Chou", "Franco", "Kaja"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
-    "Kimmy": { lanes: ["Gold", "Mid", "Jungle"], counteredBy: ["Lolita", "Chou", "Franco", "Khufra"], synergies: ["Tigreal", "Atlas", "Angela"] },
+    "Kimmy": { lanes: ["Gold", "Mid", "Jungle"], counteredBy: ["Lolita", "Chou", "Franco", "Khufra", "Belerick"], synergies: ["Tigreal", "Atlas", "Angela"] },
     "Layla": { lanes: ["Gold"], counteredBy: ["Chou", "Franco", "Saber", "Natalia"], synergies: ["Tigreal", "Atlas", "Belerick"] },
     "Lesley": { lanes: ["Gold"], counteredBy: ["Aldous", "Saber", "Natalia", "Karina"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
     "Melissa": { lanes: ["Gold"], counteredBy: ["Yin", "Phoveus", "Chou", "Franco"], synergies: ["Tigreal", "Atlas", "Minotaur"] },
@@ -144,10 +149,10 @@ const matchupData = {
     "Wanwan": { lanes: ["Gold"], counteredBy: ["Phoveus", "Khufra", "Franco", "Chou"], synergies: ["Mathilda", "Angela", "Diggie"] }
 };
 
-// --- THE BULLETPROOF IMAGE GENERATOR ---
-const IMAGE_BASE_URL = "https://openmlbb.fastapicloud.dev/static/hero_icon/"; 
-
-const getHeroImage = (heroName) => {
-    let formattedName = heroName.toLowerCase().replace(/['\s-]/g, "_");
-    return `${IMAGE_BASE_URL}${formattedName}.png`;
-};
+// URL GENERATOR
+const heroImages = {};
+Object.keys(matchupData).forEach(hero => {
+    // Standardizes the name for the API (e.g. "Yi Sun-shin" -> "yi_sun-shin")
+    let formattedName = hero.toLowerCase().replace(/['\s]/g, "_").replace(/_-_/g, "-");
+    heroImages[hero] = `${IMAGE_BASE_URL}${formattedName}.png`;
+});
