@@ -33,4 +33,12 @@ Since this is a vanilla web application, there are no complicated installations 
 3. Double-click the `index.html` file to open it in your default web browser.
 4. Start drafting!
 
-## 🗺️ Roadmap (Future Updates
+## 🗺️ Roadmap (Future Updates)
+
+* Add a "Lane Preference" toggle to filter recommendations by role.
+* Expand the matchup database with the latest patch adjustments.
+* Implement a save/load feature for custom user tier lists.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
