@@ -137,33 +137,8 @@ const draftState = {
     blueBans: [], redBans: [], bluePicks: [], redPicks: [], selectedHeroFocus: null 
 };
 
-let heroImages = {}; 
-
-// --- 3. INITIALIZATION (BULLETPROOF API FETCH) ---
-async function init() {
-    try {
-        console.log("Fetching Hero Images from OpenMLBB...");
-        // Try the new API endpoint
-        const response = await fetch('https://openmlbb.fastapicloud.dev/api/v1/heroes')
-            .catch(() => fetch('https://raw.githubusercontent.com/p3hndrx/MLBB-API/main/v1/hero-meta-final.json')); // Ultimate Fallback
-        
-        if (response && response.ok) {
-            const rawData = await response.json();
-            // Handle APIs that wrap data in 'data' object or return a raw array
-            let apiData = rawData.data || rawData.result || rawData;
-            let heroesList = Array.isArray(apiData) ? apiData : Object.values(apiData);
-            
-            heroesList.forEach(hero => {
-                let name = hero.hero_name || hero.name || hero.title; 
-                let imgUrl = hero.hero_avatar || hero.avatar || hero.icon || hero.image;
-                if (name && imgUrl) heroImages[name] = imgUrl;
-            });
-            console.log("Hero portraits loaded successfully!");
-        }
-    } catch (error) {
-        console.error("API failed. Falling back to text mode.", error);
-    }
-
+// --- 3. INITIALIZATION (SYNCHRONOUS, USES data.js) ---
+function init() {
     renderHeroGrid("All");
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -194,11 +169,10 @@ function renderHeroGrid(laneFilter) {
         let btn = document.createElement('div');
         btn.classList.add('hero-btn');
         
-        // Include fallback text that shows up if the image link is broken or missing
         let fallbackText = `<span class="hero-fallback-text">${heroName}</span>`;
         
-        if (heroImages[heroName]) {
-            // Added onerror event: if the image breaks, it hides the image and displays the text!
+        // Ensure heroImages is loaded from data.js
+        if (typeof heroImages !== 'undefined' && heroImages[heroName]) {
             btn.innerHTML = `<img src="${heroImages[heroName]}" alt="${heroName}" title="${heroName}" onerror="this.style.display='none';">${fallbackText}`;
         } else {
             btn.innerHTML = fallbackText; 
@@ -262,8 +236,8 @@ function updateSlots(selector, dataArray) {
         if (dataArray[i]) {
             let heroName = dataArray[i];
             
-            if (heroImages[heroName]) {
-                slots[i].innerHTML = `<img src="${heroImages[heroName]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" onerror="this.style.display='none'; this.nextSibling.style.display='block';"><span style="display:none; font-size: 0.6rem;">${heroName}</span>`;
+            if (typeof heroImages !== 'undefined' && heroImages[heroName]) {
+                slots[i].innerHTML = `<img src="${heroImages[heroName]}" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" onerror="this.style.display='none'; this.nextSibling.style.display='block';"><span style="display:none; font-size: 0.8rem;">${heroName}</span>`;
             } else {
                 slots[i].innerText = heroName;
             }
@@ -271,7 +245,7 @@ function updateSlots(selector, dataArray) {
     }
 }
 
-// --- 7. WIN PROBABILITY ENGINE (CLASH BAR EDITION) ---
+// --- 7. WIN PROBABILITY ENGINE (CLASH BAR) ---
 function calculateWinRate() {
     const display = document.getElementById('win-rate-display');
     const blueBar = document.getElementById('win-bar-blue');
